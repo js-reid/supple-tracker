@@ -47,7 +47,7 @@ A mobile-first, self-hosted web application for tracking nutritional supplement 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/supple-tracker.git
+   git clone https://github.com/js-reid/supple-tracker.git
    cd supple-tracker
    ```
 
@@ -255,11 +255,40 @@ All colors are defined as CSS variables in `public/css/styles.css` (lines 1-41).
 
 ## 🐳 Docker Deployment
 
-### Using Docker Compose
+### Quick Start (Pull from GitHub Container Registry)
+
+**Recommended for most users** - No build required:
+
+1. **Create a directory for your data**
+   ```bash
+   mkdir -p ~/supple-tracker/data
+   cd ~/supple-tracker
+   ```
+
+2. **Download the production docker-compose file**
+   ```bash
+   curl -O https://raw.githubusercontent.com/js-reid/supple-tracker/main/docker-compose.prod.yml
+   ```
+
+3. **Pull and start the container**
+   ```bash
+   docker-compose -f docker-compose.prod.yml up -d
+   ```
+
+5. **Access the application**
+   ```
+   http://localhost:3000
+   ```
+
+The SQLite database will be persisted in `./data/supplements.db` via volume mount.
+
+### Build Locally (Development)
+
+If you want to build the image yourself:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/supple-tracker.git
+   git clone https://github.com/js-reid/supple-tracker.git
    cd supple-tracker
    ```
 
@@ -268,16 +297,13 @@ All colors are defined as CSS variables in `public/css/styles.css` (lines 1-41).
    docker-compose up -d
    ```
 
-3. **Access the application**
-   ```
-   http://localhost:3000
-   ```
-
-The SQLite database will be persisted in `./data/supplements.db` via volume mount.
-
 ### Using Docker Run
 
 ```bash
+# Pull from GitHub Container Registry
+docker pull ghcr.io/js-reid/supple-tracker:latest
+
+# Or build locally
 docker build -t supple-tracker .
 
 docker run -d \
@@ -286,7 +312,7 @@ docker run -d \
   -v $(pwd)/data:/app/data \
   -e PORT=3000 \
   --restart unless-stopped \
-  supple-tracker
+  ghcr.io/js-reid/supple-tracker:latest
 ```
 
 ### Unraid Deployment
@@ -294,7 +320,7 @@ docker run -d \
 Supple Tracker works great on Unraid! Here's how to set it up:
 
 1. **In Unraid Docker settings**, add a new container with these settings:
-   - **Repository**: `your-registry/supple-tracker:latest` (or build locally)
+   - **Repository**: `ghcr.io/js-reid/supple-tracker:latest`
    - **Network Type**: Bridge
    - **Port Mapping**:
      - Container Port: `3000`
@@ -311,6 +337,24 @@ Supple Tracker works great on Unraid! Here's how to set it up:
 3. **Access via your reverse proxy** or directly at `http://your-unraid-ip:3000`
 
 The app will automatically create the SQLite database on first run.
+
+### Setting Up GitHub Container Registry (For Maintainers)
+
+The included GitHub Actions workflow automatically builds and pushes to ghcr.io when you:
+- Push to the `main` branch (creates `latest` tag)
+- Create a version tag like `v1.0.0` (creates versioned tags)
+
+**One-time setup:**
+1. Push your code to GitHub
+2. Go to your repo Settings → Actions → General
+3. Under "Workflow permissions", select "Read and write permissions"
+4. The workflow will run automatically on your next push
+
+**Making the image public:**
+1. Go to https://github.com/js-reid?tab=packages
+2. Click on your `supple-tracker` package
+3. Click "Package settings"
+4. Scroll down and click "Change visibility" → Make public
 
 ## 🤝 Contributing
 
