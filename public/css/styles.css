@@ -439,6 +439,30 @@ main {
   margin-top: 1.5rem;
 }
 
+/* Supplement ID display */
+.supplement-id-display {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: var(--bg-tertiary);
+  border-radius: 6px;
+  border-left: 3px solid var(--border-color-hover);
+}
+
+.supplement-id-display small {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.supplement-id-display code {
+  background-color: var(--bg-secondary);
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
 /* Table styles (for history page) */
 table {
   width: 100%;

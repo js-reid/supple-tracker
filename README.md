@@ -201,7 +201,7 @@ The API is fully accessible for external tools like Apple Shortcuts, IFTTT, or h
 
 Create a shortcut that makes an HTTP POST request to log supplements:
 
-**Example: Log Vitamin D3**
+**Example: Log Vitamin D3 (Full)**
 ```
 POST http://your-server:3000/api/log
 Content-Type: application/json
@@ -213,6 +213,18 @@ Content-Type: application/json
   "notes": "with breakfast"
 }
 ```
+
+**Example: Minimal (Auto-timestamp)**
+```
+POST http://your-server:3000/api/log
+Content-Type: application/json
+
+{
+  "supplement_id": 1,
+  "dosage": "5000 IU"
+}
+```
+This will automatically use the current timestamp.
 
 **Getting Supplement IDs:**
 ```

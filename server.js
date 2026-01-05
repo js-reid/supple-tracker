@@ -7,6 +7,17 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+
+// Request logging middleware
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${req.method} ${req.path}`);
+  if (req.method === 'POST' || req.method === 'PUT') {
+    console.log('  Body:', JSON.stringify(req.body));
+  }
+  next();
+});
+
 app.use(express.static('public'));
 
 // API Routes
@@ -108,6 +119,15 @@ app.post('/api/log', async (req, res) => {
       return res.status(400).json({ error: 'supplement_id and dosage are required' });
     }
 
+    // Verify supplement exists
+    const supplement = await dbGet('SELECT id, name FROM supplements WHERE id = ?', [supplement_id]);
+    if (!supplement) {
+      return res.status(404).json({
+        error: 'Supplement not found',
+        message: `No supplement exists with id ${supplement_id}. Create it in Settings first or check GET /api/supplements for valid IDs.`
+      });
+    }
+
     const result = await dbRun(`
       INSERT INTO logs (supplement_id, taken_at, dosage, notes)
       VALUES (?, ?, ?, ?)
@@ -116,13 +136,21 @@ app.post('/api/log', async (req, res) => {
     res.json({
       id: result.lastID,
       supplement_id,
+      supplement_name: supplement.name,
       taken_at: taken_at || new Date().toISOString(),
       dosage,
       notes
     });
   } catch (error) {
     console.error('Error creating log:', error);
-    res.status(500).json({ error: 'Failed to create log' });
+    if (error.code === 'SQLITE_CONSTRAINT') {
+      res.status(400).json({
+        error: 'Invalid supplement_id',
+        message: 'The supplement_id does not exist. Create the supplement first or check GET /api/supplements for valid IDs.'
+      });
+    } else {
+      res.status(500).json({ error: 'Failed to create log' });
+    }
   }
 });
 
@@ -293,6 +321,17 @@ app.get('/history', (req, res) => {
 
 app.get('/settings', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'settings.html'));
+});
+
+// 404 handler for undefined routes
+app.use((req, res) => {
+  console.log(`[404] Route not found: ${req.method} ${req.path}`);
+  res.status(404).json({
+    error: 'Route not found',
+    method: req.method,
+    path: req.path,
+    message: `The endpoint ${req.method} ${req.path} does not exist. Check the API documentation.`
+  });
 });
 
 // Initialize database and start server

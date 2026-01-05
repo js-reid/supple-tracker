@@ -274,6 +274,9 @@ function openAddModal() {
   document.querySelectorAll('.color-option').forEach(b => b.classList.remove('selected'));
   document.querySelector('.color-option[data-color="#6c757d"]').classList.add('selected');
 
+  // Hide ID display for new supplements
+  document.getElementById('supplement-id-display').style.display = 'none';
+
   document.getElementById('supplement-modal').classList.add('active');
   setTimeout(() => document.getElementById('name').focus(), 100);
 }
@@ -292,6 +295,10 @@ function openEditModal(supplement) {
   document.querySelectorAll('.color-option').forEach(b => b.classList.remove('selected'));
   const colorBtn = document.querySelector(`.color-option[data-color="${selectedColor}"]`);
   if (colorBtn) colorBtn.classList.add('selected');
+
+  // Show and populate ID display for editing
+  document.getElementById('supplement-id-display').style.display = 'block';
+  document.getElementById('supplement-id-value').textContent = supplement.id;
 
   document.getElementById('supplement-modal').classList.add('active');
   setTimeout(() => document.getElementById('name').focus(), 100);
