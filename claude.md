@@ -1,7 +1,12 @@
 # Supple Tracker - Supplement Intake Tracking Application
 
+## Project Status: ✅ Complete (Phases 1-3)
+
 ## Project Overview
 A mobile-first, self-hosted web application for tracking nutritional supplement intake. Single-screen interface inspired by til.re, containerized with Docker, storing data in SQLite.
+
+**Current Version**: 1.0.0
+**Completed**: January 2026
 
 ## Core Requirements
 
@@ -153,30 +158,73 @@ supple-tracker/
 
 ## Development Phases
 
-### Phase 1: Core Functionality
-1. Set up Node.js + Express server
-2. Initialize SQLite database with schema
-3. Create main screen with static buttons
-4. Implement basic logging (POST /api/log)
-5. Display last taken timestamps
+### Phase 1: Core Functionality ✅ COMPLETE
+1. ✅ Set up Node.js + Express server
+2. ✅ Initialize SQLite database with schema
+3. ✅ Create main screen with dynamic buttons
+4. ✅ Implement logging (POST /api/log) with modal form
+5. ✅ Display last taken timestamps and dosages
+6. ✅ Quick-log functionality (one-click re-log)
+7. ✅ Visual feedback (animations + success messages)
 
-### Phase 2: Configuration
-1. Build settings page UI
-2. Implement supplement CRUD operations
-3. Dynamic button rendering from database
-4. Button customization (colors, order)
+**Implemented Features:**
+- Smart logging: First click opens modal, subsequent clicks quick-log with last dosage
+- Three-dot menu (⋯) for editing dosage/notes
+- Color-coded left border on supplement buttons
+- "Last taken" timestamp with relative time (e.g., "2h ago")
 
-### Phase 3: History & Data Management
-1. Create history page with chronological list
-2. Implement edit/delete functionality
-3. Add CSV/JSON export endpoints
-4. Build export UI
+### Phase 2: Configuration ✅ COMPLETE
+1. ✅ Build settings page UI with list view
+2. ✅ Implement supplement CRUD operations (Create, Read, Update, Delete)
+3. ✅ Dynamic button rendering from database
+4. ✅ Button customization (colors, order)
+5. ✅ Drag-and-drop reordering
+6. ✅ Color palette with 9 vibrant options
 
-### Phase 4: Polish & Docker
-1. Responsive CSS refinements
-2. Error handling and validation
-3. Dockerfile and docker-compose.yml
-4. Documentation (README, setup instructions)
+**Implemented Features:**
+- Modal forms for add/edit (consistent UX)
+- Drag handles (☰) for reordering supplements
+- Color palette: Gray, Red, Orange, Yellow, Green, Blue, Purple, Pink, Cyan
+- Delete confirmation with warning about associated logs
+- Real-time updates across all pages
+
+### Phase 3: History & Data Management ✅ COMPLETE
+1. ✅ Create history page with chronological list (newest first)
+2. ✅ Implement edit/delete functionality with modals
+3. ✅ Add CSV/JSON export endpoints
+4. ✅ Build export UI with download buttons
+5. ✅ Filter by supplement dropdown
+6. ✅ Filter by date range (from/to pickers)
+7. ✅ Real-time search across all fields
+
+**Implemented Features:**
+- Smart date formatting ("Today at 2:30 PM", "Yesterday", full dates)
+- Color-coded log entries matching supplement colors
+- Combined filters (supplement + date range + search work together)
+- Clear filters button for easy reset
+- Edit modal pre-fills all existing data
+- Delete confirmation shows log details
+
+### Phase 4: Polish & Docker 🔄 IN PROGRESS
+1. ✅ Responsive CSS refinements (mobile-first complete)
+2. ✅ Error handling and validation
+3. ⏳ Dockerfile and docker-compose.yml
+4. ⏳ Documentation (README, setup instructions)
+
+## Completed Enhancements
+
+### Dark Mode
+- Full dark mode support across all pages
+- Toggle button in header (☀️/🌙)
+- Persists preference to localStorage
+- CSS variables for consistent theming
+
+### Visual Design
+- Vibrant gradient title box (💊 Supple Tracker 📊)
+- Neutral gray color scheme with colorful accents
+- Smooth animations and transitions
+- Touch-friendly 44px minimum button sizes
+- Responsive grid layouts (1-4 columns based on screen size)
 
 ## Future Enhancements (Out of Scope for v1)
 - Multi-user support with authentication
