@@ -3,7 +3,7 @@
 ## Project Status: ✅ Complete (All Phases)
 
 ## Project Overview
-A mobile-first, self-hosted web application for tracking nutritional supplement intake. Single-screen interface inspired by til.re, containerized with Docker, storing data in SQLite.
+A mobile-first, self-hosted web application for tracking nutritional supplement intake. Single-screen interface containerized with Docker, storing data in SQLite.
 
 **Current Version**: 1.0.0
 **Completed**: January 2026

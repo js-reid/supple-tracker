@@ -1,6 +1,6 @@
 # 💊 Supple Tracker
 
-A mobile-first, self-hosted web application for tracking nutritional supplement intake. Inspired by [til.re](https://til.re/), Supple Tracker provides a simple, fast interface for logging your daily supplements with just a few taps.
+A mobile-first, self-hosted web application for tracking nutritional supplement intake. Supple Tracker provides a simple, fast interface for logging your daily supplements with just a few taps.
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-green)
@@ -384,7 +384,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- Inspired by [til.re](https://til.re/)
 - Built with vanilla JavaScript - no frameworks needed!
 - Designed mobile-first for optimal use on phones
 
