@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - Supple Tracker</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1 class="title-box">💊 Supple Tracker 📊</h1>
+      <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+      </button>
+    </div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/history">History</a>
+      <a href="/settings">Settings</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="settings-header">
+      <h2>Manage Supplements</h2>
+      <button class="btn btn-primary" id="add-supplement-btn">+ Add Supplement</button>
+    </div>
+
+    <div id="supplements-list" class="supplements-list">
+      <!-- Supplements will be dynamically inserted here -->
+    </div>
+
+    <div id="empty-state" class="empty-state" style="display: none;">
+      <p>No supplements yet. Add your first supplement to get started!</p>
+    </div>
+  </main>
+
+  <!-- Modal for adding/editing supplement -->
+  <div id="supplement-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Supplement</h2>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="supplement-form">
+          <input type="hidden" id="supplement-id" name="id">
+
+          <div class="form-group">
+            <label for="name">Supplement Name *</label>
+            <input type="text" id="name" name="name" placeholder="e.g., Vitamin D3" required>
+          </div>
+
+          <div class="form-group">
+            <label for="default-dosage">Default Dosage</label>
+            <input type="text" id="default-dosage" name="default_dosage" placeholder="e.g., 5000 IU, 1 capsule">
+          </div>
+
+          <div class="form-group">
+            <label>Button Color</label>
+            <div class="color-palette">
+              <button type="button" class="color-option" data-color="#6c757d" style="background-color: #6c757d;" title="Gray (default)"></button>
+              <button type="button" class="color-option" data-color="#ef4444" style="background-color: #ef4444;" title="Red"></button>
+              <button type="button" class="color-option" data-color="#f97316" style="background-color: #f97316;" title="Orange"></button>
+              <button type="button" class="color-option" data-color="#eab308" style="background-color: #eab308;" title="Yellow"></button>
+              <button type="button" class="color-option" data-color="#22c55e" style="background-color: #22c55e;" title="Green"></button>
+              <button type="button" class="color-option" data-color="#3b82f6" style="background-color: #3b82f6;" title="Blue"></button>
+              <button type="button" class="color-option" data-color="#8b5cf6" style="background-color: #8b5cf6;" title="Purple"></button>
+              <button type="button" class="color-option" data-color="#ec4899" style="background-color: #ec4899;" title="Pink"></button>
+              <button type="button" class="color-option" data-color="#06b6d4" style="background-color: #06b6d4;" title="Cyan"></button>
+            </div>
+            <input type="hidden" id="button-color" name="button_color" value="#6c757d">
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete confirmation modal -->
+  <div id="delete-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Delete Supplement?</h2>
+        <button class="close-btn" onclick="closeDeleteModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="delete-message">Are you sure you want to delete this supplement? This will also delete all associated logs.</p>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+          <button type="button" class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/settings.js"></script>
+</body>
+</html>
