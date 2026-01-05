@@ -193,6 +193,48 @@ CREATE TABLE logs (
 - `GET /api/export/csv` - Export logs as CSV
 - `GET /api/export/json` - Export logs as JSON
 
+## 🔗 External Integration
+
+The API is fully accessible for external tools like Apple Shortcuts, IFTTT, or home automation systems.
+
+### Logging via Apple Shortcuts
+
+Create a shortcut that makes an HTTP POST request to log supplements:
+
+**Example: Log Vitamin D3**
+```
+POST http://your-server:3000/api/log
+Content-Type: application/json
+
+{
+  "supplement_id": 1,
+  "dosage": "5000 IU",
+  "taken_at": "2026-01-05T10:30:00.000Z",
+  "notes": "with breakfast"
+}
+```
+
+**Getting Supplement IDs:**
+```
+GET http://your-server:3000/api/supplements
+```
+
+This returns all supplements with their IDs, which you can use in your shortcuts.
+
+**Use Case: RFID Tags**
+1. Stick NFC/RFID tags on supplement bottles
+2. Create an Apple Shortcut that POSTs to `/api/log` when scanned
+3. Map each tag to a specific supplement_id
+4. Scan the bottle to instantly log your supplement!
+
+**Required Fields:**
+- `supplement_id` (integer) - ID of the supplement
+- `dosage` (string) - Amount taken (e.g., "500mg", "2 pills")
+- `taken_at` (ISO 8601 timestamp) - When it was taken
+
+**Optional Fields:**
+- `notes` (string) - Any additional notes
+
 ## 🎨 Customization
 
 ### Changing the Port
@@ -211,9 +253,64 @@ Edit the color palette in `public/settings.html` (line 63):
 ### Modifying the Theme
 All colors are defined as CSS variables in `public/css/styles.css` (lines 1-41). Adjust the `:root` and `body.dark-mode` sections to customize the color scheme.
 
-## 🐳 Docker Support (Coming Soon)
+## 🐳 Docker Deployment
 
-Docker support is planned for Phase 4. For now, you can run the application directly with Node.js as shown in the Quick Start section.
+### Using Docker Compose
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/supple-tracker.git
+   cd supple-tracker
+   ```
+
+2. **Start with Docker Compose**
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Access the application**
+   ```
+   http://localhost:3000
+   ```
+
+The SQLite database will be persisted in `./data/supplements.db` via volume mount.
+
+### Using Docker Run
+
+```bash
+docker build -t supple-tracker .
+
+docker run -d \
+  --name supple-tracker \
+  -p 3000:3000 \
+  -v $(pwd)/data:/app/data \
+  -e PORT=3000 \
+  --restart unless-stopped \
+  supple-tracker
+```
+
+### Unraid Deployment
+
+Supple Tracker works great on Unraid! Here's how to set it up:
+
+1. **In Unraid Docker settings**, add a new container with these settings:
+   - **Repository**: `your-registry/supple-tracker:latest` (or build locally)
+   - **Network Type**: Bridge
+   - **Port Mapping**:
+     - Container Port: `3000`
+     - Host Port: `3000` (or your preferred port)
+   - **Volume Mapping**:
+     - Container Path: `/app/data`
+     - Host Path: `/mnt/user/appdata/supple-tracker`
+   - **Environment Variables** (optional):
+     - `PORT=3000`
+     - `NODE_ENV=production`
+
+2. **Apply and start** the container
+
+3. **Access via your reverse proxy** or directly at `http://your-unraid-ip:3000`
+
+The app will automatically create the SQLite database on first run.
 
 ## 🤝 Contributing
 
@@ -239,7 +336,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 Future enhancements being considered:
 
-- **Phase 4**: Docker containerization
 - **Multi-user support**: User authentication and individual profiles
 - **Reminders**: Notifications for scheduled supplements
 - **Analytics**: Charts and insights on supplement consistency
