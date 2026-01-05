@@ -1,0 +1,19 @@
+services:
+  supple-tracker:
+    image: ghcr.io/js-reid/supple-tracker:latest
+    container_name: supple-tracker
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persist SQLite database
+      - ./data:/app/data
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
