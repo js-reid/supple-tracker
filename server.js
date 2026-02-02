@@ -323,6 +323,10 @@ app.get('/settings', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'settings.html'));
 });
 
+app.get('/calendar', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'calendar.html'));
+});
+
 // 404 handler for undefined routes
 app.use((req, res) => {
   console.log(`[404] Route not found: ${req.method} ${req.path}`);

@@ -8,28 +8,11 @@ let selectedColor = '#6c757d';
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', async () => {
   initializeDarkMode();
+  highlightActiveNav();
   await loadSupplements();
   renderSupplements();
   initializeModals();
-  highlightActiveNav();
 });
-
-// Dark mode functionality (same as main.js)
-function initializeDarkMode() {
-  const savedMode = localStorage.getItem('darkMode');
-  if (savedMode === 'true') {
-    document.body.classList.add('dark-mode');
-  }
-
-  const toggleBtn = document.getElementById('dark-mode-toggle');
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isDark);
-    });
-  }
-}
 
 // Load supplements from API
 async function loadSupplements() {
@@ -401,31 +384,3 @@ async function confirmDelete() {
   }
 }
 
-// Show alert message
-function showAlert(message, type = 'success') {
-  const existingAlerts = document.querySelectorAll('.alert');
-  existingAlerts.forEach(alert => alert.remove());
-
-  const alert = document.createElement('div');
-  alert.className = `alert alert-${type}`;
-  alert.textContent = message;
-
-  const main = document.querySelector('main');
-  main.insertBefore(alert, main.firstChild);
-
-  setTimeout(() => {
-    alert.style.opacity = '0';
-    alert.style.transition = 'opacity 0.3s ease';
-    setTimeout(() => alert.remove(), 300);
-  }, 3000);
-}
-
-// Highlight active nav link
-function highlightActiveNav() {
-  const currentPath = window.location.pathname;
-  document.querySelectorAll('nav a').forEach(link => {
-    if (link.getAttribute('href') === currentPath) {
-      link.classList.add('active');
-    }
-  });
-}

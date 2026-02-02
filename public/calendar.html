@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar - Supple Tracker</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1 class="title-box">💊 Supple Tracker 📊</h1>
+      <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+      </button>
+    </div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/history">History</a>
+      <a href="/calendar">Calendar</a>
+      <a href="/settings">Settings</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="calendar-container">
+      <!-- Calendar Section -->
+      <div class="calendar-section">
+        <div class="calendar-header">
+          <button class="btn btn-secondary calendar-nav-btn" id="prev-month">&lt;</button>
+          <h2 id="current-month">January 2026</h2>
+          <button class="btn btn-secondary calendar-nav-btn" id="next-month">&gt;</button>
+        </div>
+
+        <div class="calendar-weekdays">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+
+        <div class="calendar-grid" id="calendar-grid">
+          <!-- Calendar days will be dynamically inserted here -->
+        </div>
+      </div>
+
+      <!-- Statistics Panel -->
+      <div class="stats-panel" id="stats-panel">
+        <h3>Monthly Statistics</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="stat-total-logs">0</div>
+            <div class="stat-label">Total Logs</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="stat-unique-supplements">0</div>
+            <div class="stat-label">Unique Supplements</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="stat-most-logged">-</div>
+            <div class="stat-label">Most Logged</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="stat-daily-average">0</div>
+            <div class="stat-label">Daily Average</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="stat-current-streak">0</div>
+            <div class="stat-label">Current Streak</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="stat-longest-streak">0</div>
+            <div class="stat-label">Longest Streak</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day Detail Panel -->
+    <div class="day-detail-panel" id="day-detail-panel" style="display: none;">
+      <div class="day-detail-header">
+        <h3 id="day-detail-title">January 1, 2026</h3>
+        <button class="close-btn" onclick="closeDayDetail()">&times;</button>
+      </div>
+      <div class="day-detail-content" id="day-detail-content">
+        <!-- Day logs will be dynamically inserted here -->
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/shared.js"></script>
+  <script src="/js/calendar.js"></script>
+</body>
+</html>
