@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API - Supple Tracker</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <h1 class="title-box">💊 Supple Tracker 📊</h1>
+      <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle dark mode">
+        <span class="sun">☀️</span>
+        <span class="moon">🌙</span>
+      </button>
+    </div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/history">History</a>
+      <a href="/calendar">Calendar</a>
+      <a href="/settings">Settings</a>
+      <a href="/api-docs">API</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="api-docs">
+      <div class="api-docs-header">
+        <h2>REST API Documentation</h2>
+        <p class="api-docs-intro">Supple Tracker exposes a JSON REST API for programmatic access. Use it to integrate with Apple Shortcuts, RFID tags, Home Assistant, or any HTTP client.</p>
+        <div class="api-base-url">
+          <span class="api-base-label">Base URL</span>
+          <code id="base-url"></code>
+        </div>
+      </div>
+
+      <!-- Supplements endpoints -->
+      <section class="api-section">
+        <h3 class="api-section-title">Supplements</h3>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method get">GET</span>
+              <span class="api-path">/api/supplements</span>
+            </div>
+            <span class="api-summary">List all supplements</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Returns all configured supplements ordered by sort order.</p>
+            <h4>Response</h4>
+            <pre class="api-code"><code>[
+  {
+    "id": 1,
+    "name": "Vitamin D",
+    "default_dosage": "5000 IU",
+    "button_color": "#ff6b35",
+    "sort_order": 1,
+    "created_at": "2026-01-15T10:00:00.000Z"
+  }
+]</code></pre>
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method post">POST</span>
+              <span class="api-path">/api/supplements</span>
+            </div>
+            <span class="api-summary">Create a supplement</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Creates a new supplement. It will appear as a button on the home screen.</p>
+            <h4>Request Body</h4>
+            <table class="api-params">
+              <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>name</code></td><td>string</td><td>Yes</td><td>Supplement name</td></tr>
+                <tr><td><code>default_dosage</code></td><td>string</td><td>No</td><td>Default dosage (e.g. "500mg")</td></tr>
+                <tr><td><code>button_color</code></td><td>string</td><td>No</td><td>Hex color code (default: #6c757d)</td></tr>
+              </tbody>
+            </table>
+            <h4>Example</h4>
+            <pre class="api-code"><code>curl -X POST /api/supplements \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Vitamin D",
+    "default_dosage": "5000 IU",
+    "button_color": "#ff6b35"
+  }'</code></pre>
+            <h4>Response</h4>
+            <pre class="api-code"><code>{
+  "id": 1,
+  "name": "Vitamin D",
+  "default_dosage": "5000 IU",
+  "button_color": "#ff6b35",
+  "sort_order": 1
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method put">PUT</span>
+              <span class="api-path">/api/supplements/:id</span>
+            </div>
+            <span class="api-summary">Update a supplement</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Updates an existing supplement's name, dosage, color, or sort order.</p>
+            <h4>URL Parameters</h4>
+            <table class="api-params">
+              <thead><tr><th>Param</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>id</code></td><td>Supplement ID</td></tr>
+              </tbody>
+            </table>
+            <h4>Request Body</h4>
+            <table class="api-params">
+              <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>name</code></td><td>string</td><td>Yes</td><td>Supplement name</td></tr>
+                <tr><td><code>default_dosage</code></td><td>string</td><td>No</td><td>Default dosage</td></tr>
+                <tr><td><code>button_color</code></td><td>string</td><td>No</td><td>Hex color code</td></tr>
+                <tr><td><code>sort_order</code></td><td>integer</td><td>No</td><td>Display order</td></tr>
+              </tbody>
+            </table>
+            <h4>Example</h4>
+            <pre class="api-code"><code>curl -X PUT /api/supplements/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Vitamin D3",
+    "default_dosage": "10000 IU",
+    "button_color": "#ff6b35",
+    "sort_order": 1
+  }'</code></pre>
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method delete">DELETE</span>
+              <span class="api-path">/api/supplements/:id</span>
+            </div>
+            <span class="api-summary">Delete a supplement</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Deletes a supplement and all its associated log entries (cascade delete).</p>
+            <h4>URL Parameters</h4>
+            <table class="api-params">
+              <thead><tr><th>Param</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>id</code></td><td>Supplement ID</td></tr>
+              </tbody>
+            </table>
+            <h4>Example</h4>
+            <pre class="api-code"><code>curl -X DELETE /api/supplements/1</code></pre>
+            <h4>Response</h4>
+            <pre class="api-code"><code>{ "message": "Supplement deleted" }</code></pre>
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method get">GET</span>
+              <span class="api-path">/api/supplements/last-taken</span>
+            </div>
+            <span class="api-summary">Last taken per supplement</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Returns the most recent log entry for each supplement, including timestamp and dosage.</p>
+            <h4>Response</h4>
+            <pre class="api-code"><code>[
+  {
+    "supplement_id": 1,
+    "name": "Vitamin D",
+    "last_taken": "2026-02-20T08:30:00.000Z",
+    "last_dosage": "5000 IU"
+  },
+  {
+    "supplement_id": 2,
+    "name": "Magnesium",
+    "last_taken": null,
+    "last_dosage": null
+  }
+]</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Logging endpoints -->
+      <section class="api-section">
+        <h3 class="api-section-title">Logging</h3>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method post">POST</span>
+              <span class="api-path">/api/log</span>
+            </div>
+            <span class="api-summary">Log a supplement intake</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Records that a supplement was taken. This is the primary endpoint for integrations (Apple Shortcuts, RFID tags, etc.).</p>
+            <h4>Request Body</h4>
+            <table class="api-params">
+              <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>supplement_id</code></td><td>integer</td><td>Yes</td><td>ID of the supplement (from GET /api/supplements)</td></tr>
+                <tr><td><code>dosage</code></td><td>string</td><td>Yes</td><td>Dosage taken (e.g. "500mg", "2 pills")</td></tr>
+                <tr><td><code>taken_at</code></td><td>string</td><td>No</td><td>ISO 8601 timestamp (defaults to now)</td></tr>
+                <tr><td><code>notes</code></td><td>string</td><td>No</td><td>Optional notes (e.g. "with food")</td></tr>
+              </tbody>
+            </table>
+            <h4>Example</h4>
+            <pre class="api-code"><code>curl -X POST /api/log \
+  -H "Content-Type: application/json" \
+  -d '{
+    "supplement_id": 1,
+    "dosage": "5000 IU",
+    "notes": "with breakfast"
+  }'</code></pre>
+            <h4>Response</h4>
+            <pre class="api-code"><code>{
+  "id": 42,
+  "supplement_id": 1,
+  "supplement_name": "Vitamin D",
+  "taken_at": "2026-02-20T14:30:00.000Z",
+  "dosage": "5000 IU",
+  "notes": "with breakfast"
+}</code></pre>
+            <h4>Errors</h4>
+            <table class="api-params">
+              <thead><tr><th>Status</th><th>Cause</th></tr></thead>
+              <tbody>
+                <tr><td><code>400</code></td><td>Missing supplement_id or dosage</td></tr>
+                <tr><td><code>404</code></td><td>Supplement ID does not exist</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method get">GET</span>
+              <span class="api-path">/api/logs</span>
+            </div>
+            <span class="api-summary">List all logs</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Returns all log entries in reverse chronological order (newest first).</p>
+            <h4>Response</h4>
+            <pre class="api-code"><code>[
+  {
+    "id": 42,
+    "supplement_id": 1,
+    "supplement_name": "Vitamin D",
+    "taken_at": "2026-02-20T14:30:00.000Z",
+    "dosage": "5000 IU",
+    "notes": "with breakfast",
+    "created_at": "2026-02-20T14:30:00.000Z",
+    "updated_at": "2026-02-20T14:30:00.000Z"
+  }
+]</code></pre>
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method put">PUT</span>
+              <span class="api-path">/api/logs/:id</span>
+            </div>
+            <span class="api-summary">Update a log entry</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Updates an existing log entry's timestamp, dosage, or notes.</p>
+            <h4>URL Parameters</h4>
+            <table class="api-params">
+              <thead><tr><th>Param</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>id</code></td><td>Log entry ID</td></tr>
+              </tbody>
+            </table>
+            <h4>Request Body</h4>
+            <table class="api-params">
+              <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>taken_at</code></td><td>string</td><td>Yes</td><td>ISO 8601 timestamp</td></tr>
+                <tr><td><code>dosage</code></td><td>string</td><td>Yes</td><td>Dosage amount</td></tr>
+                <tr><td><code>notes</code></td><td>string</td><td>No</td><td>Optional notes</td></tr>
+              </tbody>
+            </table>
+            <h4>Example</h4>
+            <pre class="api-code"><code>curl -X PUT /api/logs/42 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "taken_at": "2026-02-20T08:00:00.000Z",
+    "dosage": "10000 IU",
+    "notes": "double dose today"
+  }'</code></pre>
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method delete">DELETE</span>
+              <span class="api-path">/api/logs/:id</span>
+            </div>
+            <span class="api-summary">Delete a log entry</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Permanently deletes a log entry.</p>
+            <h4>URL Parameters</h4>
+            <table class="api-params">
+              <thead><tr><th>Param</th><th>Description</th></tr></thead>
+              <tbody>
+                <tr><td><code>id</code></td><td>Log entry ID</td></tr>
+              </tbody>
+            </table>
+            <h4>Example</h4>
+            <pre class="api-code"><code>curl -X DELETE /api/logs/42</code></pre>
+            <h4>Response</h4>
+            <pre class="api-code"><code>{ "message": "Log deleted" }</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Export endpoints -->
+      <section class="api-section">
+        <h3 class="api-section-title">Export</h3>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method get">GET</span>
+              <span class="api-path">/api/export/csv</span>
+            </div>
+            <span class="api-summary">Export logs as CSV</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Downloads all log entries as a CSV file. Columns: Supplement, Taken At, Dosage, Notes.</p>
+            <h4>Example</h4>
+            <pre class="api-code"><code>curl -O /api/export/csv</code></pre>
+            <p>Returns <code>Content-Type: text/csv</code> with filename <code>supplement-logs.csv</code>.</p>
+          </div>
+        </div>
+
+        <div class="api-endpoint">
+          <div class="api-endpoint-header" onclick="toggleEndpoint(this)">
+            <div class="api-method-path">
+              <span class="api-method get">GET</span>
+              <span class="api-path">/api/export/json</span>
+            </div>
+            <span class="api-summary">Export logs as JSON</span>
+            <span class="api-toggle">+</span>
+          </div>
+          <div class="api-endpoint-body">
+            <p>Downloads all log entries as a JSON file with full details including IDs and timestamps.</p>
+            <h4>Example</h4>
+            <pre class="api-code"><code>curl -O /api/export/json</code></pre>
+            <p>Returns <code>Content-Type: application/json</code> with filename <code>supplement-logs.json</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Error responses -->
+      <section class="api-section">
+        <h3 class="api-section-title">Error Responses</h3>
+        <div class="api-error-info">
+          <p>All errors return JSON with an <code>error</code> field and sometimes a <code>message</code> field with more detail.</p>
+          <table class="api-params">
+            <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>400</code></td><td>Bad request - missing or invalid parameters</td></tr>
+              <tr><td><code>404</code></td><td>Resource not found</td></tr>
+              <tr><td><code>500</code></td><td>Internal server error</td></tr>
+            </tbody>
+          </table>
+          <h4>Example Error</h4>
+          <pre class="api-code"><code>{
+  "error": "Supplement not found",
+  "message": "No supplement exists with id 99. Create it in Settings first or check GET /api/supplements for valid IDs."
+}</code></pre>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="/js/shared.js"></script>
+  <script>
+    // Initialize shared features
+    initializeDarkMode();
+    highlightActiveNav();
+
+    // Set base URL dynamically
+    document.getElementById('base-url').textContent = window.location.origin;
+
+    // Toggle endpoint details
+    function toggleEndpoint(header) {
+      const endpoint = header.parentElement;
+      const toggle = header.querySelector('.api-toggle');
+      endpoint.classList.toggle('open');
+      toggle.textContent = endpoint.classList.contains('open') ? '\u2212' : '+';
+    }
+  </script>
+</body>
+</html>
